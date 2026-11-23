@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OpenShell Field Assessment</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;800;900&family=Red+Hat+Text:wght@400;500;600&family=Red+Hat+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: a field inspection report. Navy verdict band with the area scorecard; then what held, an
+   impact × effort punch-list matrix, two close-ups (the approval race and the prover gap), what the
+   boundary can and cannot see, the full issue catalogue, and a now / next / later roadmap. */
+:root{
+  --bg:#ffffff; --pan:#f2f5fb; --ink:#0d1530; --mut:#4a5578; --rule:#d6dceb;
+  --ox:#0b1f4b; --oxmut:#c9d3ee; --mg:#c8094f; --mgbg:#fde6ef; --bl:#2f5fd0; --blbg:#e6edfc;
+  --good:#1a7f4b; --goodbg:#e3f4ea; --mid:#a35a00; --midbg:#fdf0dc; --bad:#c42b1c; --badbg:#fde7e4;
+  --code:#0f1a3a; --codeink:#e6ecff;
+  --f-d:"Red Hat Display",system-ui,sans-serif; --f-t:"Red Hat Text",system-ui,sans-serif; --f-m:"Red Hat Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#070f26;--pan:#0f1a3a;--ink:#e9edf7;--mut:#aab4d0;--rule:#243256;--mg:#ff5c93;--mgbg:#3a1030;--bl:#7fa2ff;--blbg:#16244d;--good:#5fd394;--goodbg:#0f3324;--mid:#ffb85c;--midbg:#3a2608;--bad:#ff7a6b;--badbg:#3d1512;--code:#050b1d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#070f26;--pan:#0f1a3a;--ink:#e9edf7;--mut:#aab4d0;--rule:#243256;--mg:#ff5c93;--mgbg:#3a1030;--bl:#7fa2ff;--blbg:#16244d;--good:#5fd394;--goodbg:#0f3324;--mid:#ffb85c;--midbg:#3a2608;--bad:#ff7a6b;--badbg:#3d1512;--code:#050b1d;color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-t);overflow-x:clip}
+a{color:var(--bl);text-underline-offset:2px}
+h1,h2,h3{font-family:var(--f-d);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,4.8vw,52px)} h2{font-size:clamp(24px,3vw,34px);margin-bottom:8px} h3{font-size:18px;line-height:1.25}
+p{margin:0 0 10px}
+code{font:13.5px var(--f-m);background:var(--pan);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.band{padding-block:clamp(28px,4vw,56px)}
+.alt{background:var(--pan)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.dek{color:var(--mut);max-width:72ch;margin-bottom:22px}
+.small{font-size:14px;color:var(--mut)}
+.pill{display:inline-block;font:700 12px var(--f-t);letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:11px;white-space:nowrap}
+.p-good{background:var(--goodbg);color:var(--good)} .p-mid{background:var(--midbg);color:var(--mid)} .p-bad{background:var(--badbg);color:var(--bad)}
+.ev{display:inline-block;font:600 11.5px var(--f-m);padding:1px 7px;border-radius:4px;border:1px solid var(--rule);color:var(--mut);white-space:nowrap}
+.ev.obs{border-color:var(--bl);color:var(--bl)}
+
+/* hero */
+.hero{background:var(--ox);color:#fff;margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 44px);padding-bottom:42px}
+.eyebrow{font:600 13px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:#ff8fb6;margin-bottom:12px}
+.hero .lede{color:var(--oxmut);max-width:68ch;font-size:18px;margin-top:14px}
+.score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:28px}
+.area{border:1px solid #2c4280;border-radius:10px;padding:12px 14px;display:grid;gap:6px;align-content:start}
+.area .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.area b{font:700 16px var(--f-d)}
+.area span.r{font-size:14px;color:var(--oxmut)}
+.area .meter{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.area .meter i{height:6px;border-radius:3px;background:#2c4280}
+.area.s3 .meter i{background:#5fd394} .area.s2 .meter i:nth-child(-n+2){background:#ffb85c} .area.s1 .meter i:first-child{background:#ff7a6b}
+.hero .pill{background:rgba(255,255,255,.1);color:#fff}
+
+/* held */
+.held{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.held div{border-top:3px solid var(--good);padding-top:10px;font-size:15px}
+.held b{display:block;font:700 16px var(--f-d);margin-bottom:3px}
+
+/* matrix */
+.mx{display:grid;grid-template-columns:2.2em minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto;gap:8px}
+.ylab{grid-row:1 / 3;writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font:600 13px var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.q{border-radius:12px;padding:14px;min-height:150px;display:flex;flex-direction:column;gap:8px}
+.q h3{font-size:15px;letter-spacing:.02em}
+.q .sub{font-size:13px;color:var(--mut);margin-top:-6px}
+.q.qw{background:var(--goodbg)} .q.bb{background:var(--mgbg)} .q.po{background:var(--pan);border:1px solid var(--rule)} .q.pl{background:var(--blbg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--bg);border:1px solid var(--rule);border-radius:16px;padding:4px 10px 4px 4px;font-size:13.5px;text-decoration:none;color:var(--ink)}
+.chip i{font:800 12px var(--f-d);font-style:normal;background:var(--ox);color:#fff;border-radius:10px;min-width:2.1em;text-align:center;padding:2px 5px}
+.chip:hover{border-color:var(--bl)}
+.xlab{grid-column:2 / 4;display:flex;justify-content:space-between;font:600 13px var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+
+/* close-ups */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+.panel{border:1px solid var(--rule);border-radius:12px;padding:18px;background:var(--bg)}
+.tl{margin:14px 0 6px;display:grid;gap:14px}
+.tlrow .lab{font:600 13.5px var(--f-t);margin-bottom:6px}
+.track{position:relative;height:34px;background:var(--pan);border-radius:6px}
+.seg{position:absolute;top:0;bottom:0;border-radius:6px}
+.mark{position:absolute;top:-4px;bottom:-4px;width:3px;border-radius:2px}
+.mlab{position:absolute;top:38px;font:600 11.5px var(--f-m);white-space:nowrap;transform:translateX(-50%);color:var(--mut)}
+.mlab.l{transform:none} .mlab.r{transform:translateX(-100%)}
+.ticks{display:flex;justify-content:space-between;font:500 11px var(--f-m);color:var(--mut);margin-top:30px}
+.rule{border-radius:10px;padding:12px 14px;margin-top:10px;font-size:14.5px}
+.rule b{font:700 15px var(--f-m);display:block;margin-bottom:4px;overflow-wrap:anywhere}
+.rule.y{background:var(--goodbg)} .rule.n{background:var(--badbg)}
+.rule .pv{font:600 13px var(--f-m)}
+.propose{margin-top:12px;border:2px dashed var(--bl);border-radius:10px;padding:12px 14px;font-size:14.5px}
+
+/* sees */
+.sees{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+.sees > div{padding:16px 18px}
+.sees .in{background:var(--goodbg)} .sees .out{background:var(--badbg)}
+.sees h3{margin-bottom:8px}
+.sees ul{margin:0;padding-left:18px;font-size:15px} .sees li{margin-bottom:6px}
+
+/* catalogue */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.filters button{font:600 14px var(--f-t);min-height:38px;padding:0 14px;border-radius:19px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ox);color:#fff;border-color:var(--ox)}
+.filters button:focus-visible{outline:3px solid var(--mg);outline-offset:2px}
+.cat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{border:1px solid var(--rule);border-radius:12px;padding:14px 16px;background:var(--bg);display:grid;gap:8px;align-content:start;border-left:5px solid var(--rule)}
+.card.sev-h{border-left-color:var(--bad)} .card.sev-m{border-left-color:var(--mid)} .card.sev-l{border-left-color:var(--bl)}
+.card .hd{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.card .id{font:800 14px var(--f-d);color:var(--mut)}
+.card h3{flex:1 1 220px;font-size:17px}
+.card .meta{display:flex;gap:6px;flex-wrap:wrap}
+.card dl{display:grid;grid-template-columns:5.4em minmax(0,1fr);gap:4px 10px;margin:0;font-size:14.5px}
+.card dt{color:var(--mut);font-weight:600} .card dd{margin:0}
+.card dd.fix{color:var(--ink);font-weight:500}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.road > div{border-radius:12px;padding:16px}
+.road .now{background:var(--goodbg)} .road .next{background:var(--blbg)} .road .later{background:var(--pan);border:1px solid var(--rule)}
+.road h3{margin-bottom:8px}
+.road ol{margin:0;padding-left:20px;font-size:15px} .road li{margin-bottom:7px}
+.caveat{border-left:4px solid var(--mid);padding:8px 14px;font-size:15px;color:var(--mut);margin-top:18px}
+footer{font-size:14px;color:var(--mut)}
+
+@media (max-width:900px){.score,.held,.road{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.two,.cat,.sees{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.score,.held,.road{grid-template-columns:minmax(0,1fr)}.mx{grid-template-columns:minmax(0,1fr)}.ylab,.xlab{display:none}.q{min-height:0}.card dl{grid-template-columns:minmax(0,1fr)}.card dt{margin-top:4px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+ <div class="wrap">
+  <p class="eyebrow">Field assessment · NVIDIA OpenShell 0.1.9 · Windows 10 + WSL 2 + Docker Desktop · 23 Nov 2026</p>
+  <h1>The boundary held every time. Most of what's around it needs work.</h1>
+  <p class="lede">An assessment from one day of hands-on use: a .NET agent on local Nemotron, two policy decisions, an exfiltration attempt, a red-team scan. Each finding is marked <span class="ev obs" style="color:#9fc0ff;border-color:#9fc0ff">observed</span> (we hit it), <span class="ev" style="color:#c9d3ee;border-color:#5a6a9a">docs</span> (documented behaviour) or <span class="ev" style="color:#c9d3ee;border-color:#5a6a9a">inferred</span> (reasoned, not tested).</p>
+  <div class="score">
+   <div class="area s3"><div class="top"><b>Isolation and enforcement</b><span class="pill">Strong</span></div><div class="meter"><i></i><i></i><i></i></div><span class="r">Every unlisted file, host and binary was blocked, including a real exfiltration attempt.</span></div>
+   <div class="area s3"><div class="top"><b>Policy model</b><span class="pill">Strong</span></div><div class="meter"><i></i><i></i><i></i></div><span class="r">Rules bind a binary to a host and port. Precise, readable, hot-reloadable.</span></div>
+   <div class="area s2"><div class="top"><b>Human review</b><span class="pill">Mixed</span></div><div class="meter"><i></i><i></i><i></i></div><span class="r">The proposal loop works, but proposals carry little context and the prover only reasons about credentials.</span></div>
+   <div class="area s2"><div class="top"><b>Developer experience</b><span class="pill">Mixed</span></div><div class="meter"><i></i><i></i><i></i></div><span class="r">Opaque admission errors, one upload corruption, no runtime presets.</span></div>
+   <div class="area s1"><div class="top"><b>Windows support</b><span class="pill">Weak</span></div><div class="meter"><i></i><i></i><i></i></div><span class="r">Experimental. Sandboxes fail until you find one undocumented-for-WSL setting.</span></div>
+   <div class="area s1"><div class="top"><b>Stability and docs</b><span class="pill">Weak</span></div><div class="meter"><i></i><i></i><i></i></div><span class="r">Breaking removals between minor versions; old doc pages answer "Page Not Found".</span></div>
+  </div>
+ </div>
+</header>
+
+<section class="band" id="held">
+ <div class="wrap">
+  <h2>What held up</h2>
+  <p class="dek">Before the problems: the core idea works, and some details are better than in most agent sandboxes.</p>
+  <div class="held">
+   <div><b>Policy outside the agent</b>The model obeyed an instruction to post source code to an attacker's host. The sandbox refused the DNS lookup and the connection anyway.</div>
+   <div><b>Binary-level identity</b>The same host was allowed for curl and denied for dotnet. Rules name the kernel-resolved binary, not a process name.</div>
+   <div><b>Deny, propose, approve</b>A denial becomes a reviewable rule with binary, host, port and a rationale, and an approval applies without restarting the agent.</div>
+   <div><b>An audit trail by default</b>Every decision is an OCSF event; <code>rule history</code> reads like a change log.</div>
+   <div><b>Errors that teach, sometimes</b>The binary denial included a "SYMLINK HINT" explaining that <code>/usr/bin/dotnet</code> resolves to <code>/usr/share/dotnet/dotnet</code>.</div>
+   <div><b>A prover in the loop</b>It flagged that approving dotnet → the model endpoint widened credential reach, before anyone clicked approve.</div>
+  </div>
+ </div>
+</section>
+
+<section class="band alt" id="matrix">
+ <div class="wrap">
+  <h2>Where to start: impact against effort</h2>
+  <p class="dek">Fifteen findings, placed by how much they hurt a real team and how hard they look to fix from the outside. Select a number to jump to its card.</p>
+  <div class="mx">
+   <div class="ylab">Impact on teams ↑</div>
+   <div class="q qw"><h3>Quick wins</h3><span class="sub">High impact · low effort</span><div class="chips">
+    <a class="chip" href="#i1"><i>I1</i>Docker Desktop network mode</a><a class="chip" href="#i11"><i>I11</i>Upload corrupts a file</a><a class="chip" href="#i6"><i>I6</i>Approve-to-effect race</a><a class="chip" href="#i3"><i>I3</i>Opaque admission errors</a><a class="chip" href="#i4"><i>I4</i>No runtime presets</a><a class="chip" href="#i13"><i>I13</i>Silent breaking removals</a></div></div>
+   <div class="q bb"><h3>Big bets</h3><span class="sub">High impact · more effort</span><div class="chips">
+    <a class="chip" href="#i8"><i>I8</i>Prover blind to data leaks</a><a class="chip" href="#i7"><i>I7</i>Proposals lack context</a><a class="chip" href="#i14"><i>I14</i>Allowed channels carry data</a></div></div>
+   <div class="q po"><h3>Polish</h3><span class="sub">Lower impact · low effort</span><div class="chips">
+    <a class="chip" href="#i2"><i>I2</i>Landlock best effort</a><a class="chip" href="#i5"><i>I5</i>Mismatched profile is silent</a><a class="chip" href="#i10"><i>I10</i>Lost analysis on exit</a><a class="chip" href="#i12"><i>I12</i>exec ignores image ENV</a></div></div>
+   <div class="q pl"><h3>Plan for</h3><span class="sub">Lower impact · more effort</span><div class="chips">
+    <a class="chip" href="#i9"><i>I9</i>Approvals die with the sandbox</a><a class="chip" href="#i15"><i>I15</i>Outputs are out of scope</a></div></div>
+   <div></div>
+   <div class="xlab"><span>Low effort</span><span>Effort to fix →</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="band" id="closeups">
+ <div class="wrap">
+  <h2>Two close-ups</h2>
+  <div class="two">
+   <div class="panel">
+    <h3>The approval race (I6)</h3>
+    <p class="small">Measured from the sandbox logs. Both waits come from polling: the supervisor flushes its denial analysis, and later picks up the new policy, on its own schedule.</p>
+    <div class="tl">
+     <div class="tlrow"><div class="lab">Denial → proposal visible to a human</div>
+      <div class="track"><div class="seg" style="left:0;width:47%;background:var(--midbg)"></div>
+       <span class="mark" style="left:0;background:var(--bad)"></span><span class="mlab l" style="left:0">denied</span>
+       <span class="mark" style="left:47%;background:var(--bl)"></span><span class="mlab" style="left:47%">proposal · 9.4 s</span></div></div>
+     <div class="tlrow" style="margin-top:22px"><div class="lab">Approval → rule active in the sandbox</div>
+      <div class="track"><div class="seg" style="left:0;width:49%;background:var(--midbg)"></div>
+       <span class="mark" style="left:0;background:var(--good)"></span><span class="mlab l" style="left:0">approved</span>
+       <span class="mark" style="left:37.5%;background:var(--bad)"></span><span class="mlab" style="left:37.5%;top:-20px">rerun denied · 7.5 s</span>
+       <span class="mark" style="left:49%;background:var(--good)"></span><span class="mlab" style="left:49%">reloaded · 9.7 s</span></div></div>
+    </div>
+    <div class="ticks"><span>0 s</span><span>5</span><span>10</span><span>15</span><span>20 s</span></div>
+    <p style="margin-top:12px;font-size:15px">A person approves, retries straight away, and is denied again. Scripts and CI hit this every time. <b>Fix:</b> <code>rule approve --wait</code> that returns once the sandbox has acknowledged the new policy revision, plus push-based reload.</p>
+   </div>
+   <div class="panel">
+    <h3>The prover gap (I8)</h3>
+    <p class="small">The prover checked both proposals. It warned on the harmless one and stayed silent on the leak.</p>
+    <div class="rule y"><b>allow_host_openshell_internal_11434</b><span class="pv">prover: credential_reach_expansion</span><br>dotnet → the local model. No credentials involved (Ollama). Approved.</div>
+    <div class="rule n"><b>allow_collector_evil_example_443</b><span class="pv">prover: no new findings</span><br>dotnet → an unknown external host, right after the agent read source code and in the middle of a POST. Rejected by a person.</div>
+    <div class="propose"><b>Proposed: a data-egress check next to credential reach.</b> Flag a rule when it adds a destination outside the organisation's known domains and the same process has read workspace files, or sends a large or high-entropy body. Add domain signals (first seen, newly registered, reserved TLD, paste and file-drop services) to the rationale a reviewer sees.</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="band alt" id="sees">
+ <div class="wrap">
+  <h2>What the boundary sees, and what it can't</h2>
+  <p class="dek">OpenShell governs where an agent can go and what it can touch. It does not judge what the agent says, or what it sends through a door that is already open.</p>
+  <div class="sees">
+   <div class="in"><h3>Inside its view</h3><ul>
+    <li>Files the process opens (Landlock): /app was unreadable until moved</li>
+    <li>Every new host and port, per binary: dotnet to the model, to an attacker</li>
+    <li>Processes and privileges (seccomp, non-root identity)</li>
+    <li>Credentials: placeholders resolved only at approved endpoints (documented; not tested here)</li>
+   </ul></div>
+   <div class="out"><h3>Outside its view</h3><ul>
+    <li>What the model says: AgentEval's red-team got "PWNED" out of it 2 times in 3, and OpenShell had nothing to block</li>
+    <li>Data inside allowed traffic: a prompt to the inference endpoint, or a commit to an approved Git host, can carry secrets (inferred)</li>
+    <li>Intent: a proposal shows binary and host, not the tool call or the payload behind it</li>
+    <li>The host machine itself when the agent runs outside a sandbox: one v1 run sent code out from the host</li>
+   </ul></div>
+  </div>
+  <p class="small" style="margin-top:10px">The answer to the right column is layering: evaluation and red-teaming for model behaviour (AgentEval), content checks on allowed egress (OpenShell's supervisor middleware is the documented extension point), and traces that tie a network request to the tool call that made it.</p>
+ </div>
+</section>
+
+<section class="band" id="catalogue">
+ <div class="wrap">
+  <h2>All findings</h2>
+  <p class="dek">Fifteen findings, each with what we saw, why it matters and a proposed fix. Filter by area.</p>
+  <div class="filters" role="group" aria-label="Filter findings by area">
+   <button type="button" id="f-all" data-f="all" aria-pressed="true">All 15</button>
+   <button type="button" id="f-plat" data-f="plat" aria-pressed="false">Platform</button>
+   <button type="button" id="f-pol" data-f="pol" aria-pressed="false">Policy and images</button>
+   <button type="button" id="f-rev" data-f="rev" aria-pressed="false">Human review</button>
+   <button type="button" id="f-dx" data-f="dx" aria-pressed="false">Developer experience</button>
+   <button type="button" id="f-scope" data-f="scope" aria-pressed="false">Scope</button>
+  </div>
+  <div class="cat" id="cat"></div>
+ </div>
+</section>
+
+<section class="band alt" id="roadmap">
+ <div class="wrap">
+  <h2>How I would improve it</h2>
+  <div class="road">
+   <div class="now"><h3>Now: remove the paper cuts</h3><ol>
+    <li>Detect Docker Desktop and default to bridge mode; make <code>doctor</code> test a real supervisor callback (I1).</li>
+    <li>Checksum every upload and fail loudly (I11).</li>
+    <li><code>rule approve --wait</code> and push-based reload (I6).</li>
+    <li>Ship runtime presets (dotnet, node, java, python venvs) and <code>profile lint --image</code> (I4, I5).</li>
+    <li>An <code>image check</code> preflight with fix-it messages (I3).</li>
+    <li>Tombstone messages for removed commands, and real redirects for old docs (I13).</li>
+   </ol></div>
+   <div class="next"><h3>Next: make review meaningful</h3><ol>
+    <li>Give proposals context: method, path, body size, the trace and span that made the call, the last tool call (I7).</li>
+    <li>A data-egress risk class in the prover (I8).</li>
+    <li>Turn filesystem denials into proposals too, not only network ones (I3).</li>
+    <li><code>rule promote</code> to move an approved rule into a profile or policy file, with a diff (I9).</li>
+   </ol></div>
+   <div class="later"><h3>Later: cover the open doors</h3><ol>
+    <li>Content checks on allowed egress through default supervisor middleware: secrets, source code, size and rate anomalies (I14).</li>
+    <li>Accept evaluation and guardrail signals as policy inputs, so a red-team failure can tighten a rule (I15).</li>
+    <li>Show Landlock ABI and enforcement level in <code>status</code>, with a fail-closed option (I2).</li>
+   </ol></div>
+  </div>
+  <p class="caveat">Scope of this assessment: one machine, one day, OpenShell 0.1.9 on an experimental platform, a local credential-free model. The hosted-credential path (placeholder injection) was prepared but not run, and allowed-channel exfiltration (I14) is reasoned, not tested. Several findings may already be addressed on Linux or in newer releases.</p>
+ </div>
+</section>
+<footer class="band"><div class="wrap">Jose Luis Latorre · evidence in github.com/joslat/nemoplayground (logs, policy dumps, rule history, OCSF events, AgentEval reports).</div></footer>
+
+<script>
+(function(){
+var I=[
+ {id:"I1",a:"plat",s:"h",ev:"obs",t:"Docker Desktop breaks sandboxes until you change the network mode",saw:'Every sandbox failed with "Startup configuration fetch failed … failed to connect to OpenShell server", while <code>openshell doctor check</code> reported "All checks passed".',why:"The first sandbox anyone creates on Windows fails, and the error points nowhere near the cause.",fix:'Detect Docker Desktop at install and default <code>supervisor_network_mode = "bridge"</code>; have <code>doctor</code> start a probe container and test the callback; name the setting in the error.'},
+ {id:"I2",a:"plat",s:"l",ev:"obs",t:"Landlock runs in best-effort mode without saying so",saw:'The effective policy shows <code>landlock: compatibility: best_effort</code>. Nothing in <code>status</code> says whether enforcement was full or partial on this kernel.',why:"On a kernel missing Landlock features, filesystem isolation could quietly be weaker than the policy suggests (inferred).",fix:"Report the Landlock ABI and the effective enforcement in <code>status</code> and in each sandbox; offer a fail-closed mode for production."},
+ {id:"I3",a:"pol",s:"m",ev:"obs",t:"Image problems surface as opaque admission and runtime errors",saw:'"OCI WorkingDir is not usable by the sandbox identity" for a root-owned WORKDIR; then EACCES on <code>/app/MafDemo.runtimeconfig.json</code>, with no proposal, because /app is outside the read allowlist.',why:"Most container images run as root from /app. Teams will hit both on day one, and only network denials turn into proposals.",fix:"An <code>openshell image check &lt;ref&gt;</code> preflight (user, workdir, readable paths); error messages that say what to change; filesystem denials proposed like network ones."},
+ {id:"I4",a:"pol",s:"m",ev:"obs",t:"Provider profiles ship for curl and python only",saw:"The documented Ollama profile serves curl and python. A .NET agent was denied until a rule for <code>/usr/share/dotnet/dotnet</code> was approved.",why:"Every non-Python team writes its own profile, and binary paths depend on symlinks inside each image.",fix:"Runtime presets (dotnet, node, java, python venvs) and <code>profile lint --image &lt;ref&gt;</code> that checks the listed binaries exist in the image."},
+ {id:"I5",a:"pol",s:"l",ev:"docs",t:"A profile that doesn't match the image fails silently",saw:'The docs say a profile whose binaries are missing from the image "still appears in the catalog, but its credential is not injected and its traffic is denied."',why:"It looks configured and simply doesn't work; the cause only shows up in denial logs.",fix:"Warn at <code>sandbox create</code> when a provider's binaries are not present in the chosen image."},
+ {id:"I6",a:"rev",s:"h",ev:"obs",t:"Approving a rule doesn't mean it's active yet",saw:"The proposal appeared 9.4 s after the denial. After approval, a rerun 7.5 s later was still denied; the sandbox reloaded the policy at 9.7 s.",why:"People retry straight after approving and get denied again; automation needs arbitrary sleeps.",fix:"<code>rule approve --wait</code> that blocks until the sandbox acknowledges the policy revision; push-based reload; show 'approved, pending reload' in <code>rule get</code>."},
+ {id:"I7",a:"rev",s:"h",ev:"obs",t:"Proposals don't show what the agent was trying to do",saw:"Proposals show binary, host, port, a one-line rationale and a confidence of 60–65%. Nothing about the request or the tool call that made it.",why:"We could judge the exfiltration rule only because we wrote the honeypot. A real reviewer sees 'dotnet → some host' and has to guess, which leads to approval fatigue.",fix:"Attach request metadata (method, path, body size, content type), the OpenTelemetry trace and span IDs, and the agent's last tool call; link each proposal to its trace."},
+ {id:"I8",a:"rev",s:"h",ev:"obs",t:"The prover doesn't model data leaving",saw:'"prover: no new findings" on <code>allow_collector_evil_example_443</code>, proposed while the agent was posting source code to it.',why:"The prover reasons about credential reach, which misses the most common agent risk: data going somewhere it shouldn't.",fix:"A data-egress risk class: new external destination plus workspace reads, or a large or high-entropy body; domain signals (first seen, newly registered, reserved TLD, paste services)."},
+ {id:"I9",a:"rev",s:"l",ev:"obs",t:"Approvals disappear with the sandbox",saw:"Recreating <code>maf-demo</code> discarded the approved rule; the same rule had to be proposed and approved again.",why:"Every rebuild repeats the review, and the decision never reaches policy-as-code.",fix:"<code>rule promote</code> to move an approved rule into a profile, template or policy file, with a diff for code review."},
+ {id:"I10",a:"rev",s:"l",ev:"obs",t:"Denial analysis can lag a sandbox that exits",saw:"When the main process failed and the sandbox entered Error, <code>rule get</code> was empty; the proposal only appeared in history a moment later.",why:"Short-lived and CI sandboxes may end before their denials are reviewable.",fix:"Flush denial analysis synchronously on main-process exit, and say so in the CLI."},
+ {id:"I11",a:"dx",s:"h",ev:"obs",t:"sandbox upload wrote a file as zeros",saw:"<code>sandbox upload</code> copied 66 of 67 files correctly; <code>MafDemo.runtimeconfig.json</code> (342 bytes) arrived as 342 zero bytes. Same size, no error.",why:"Silent corruption of code or config is the worst kind of bug in a security tool.",fix:"End-to-end checksums with a loud failure; an <code>--verify</code> report; a regression test on WSL /mnt paths."},
+ {id:"I12",a:"dx",s:"l",ev:"obs",t:"sandbox exec ignores the image's ENV, and stdin is capped",saw:"<code>OUT_DIR</code> from the Dockerfile was missing under <code>sandbox exec</code>; piped stdin is limited to 4 MiB.",why:"Behaviour differs from <code>docker exec</code>, so images work under create and break under exec.",fix:"Apply image ENV by default (with an opt-out); stream stdin instead of buffering it."},
+ {id:"I13",a:"dx",s:"m",ev:"obs",t:"Breaking removals with no forwarding address",saw:'<code>openshell inference set</code> and <code>inference.local</code> were removed; old doc pages return HTTP 200 with "Page Not Found"; tutorials written weeks earlier no longer run.',why:"Fast change is expected at 0.1.x, but agents and humans following last month's guide fail with DNS errors.",fix:"Tombstone messages for removed commands ('removed in 0.1.x; use providers, see …'), real 301 redirects for docs, and a migration page per release."},
+ {id:"I14",a:"scope",s:"h",ev:"inf",t:"Allowed channels can carry data out",saw:"Not tested. The model endpoint and any approved host accept whatever the agent sends.",why:"An agent allowed to reach an inference API or a Git host can carry secrets in a prompt or a commit without touching a new destination.",fix:"Default supervisor middleware for content checks on allowed egress (secrets, source code, size and rate anomalies), building on the documented middleware extension point."},
+ {id:"I15",a:"scope",s:"l",ev:"obs",t:"What the model says is out of scope",saw:"AgentEval's red-team scan got 3 of 9 verbal compromises (\"PWNED\", \"41414141\"). None became an action, so OpenShell had nothing to act on.",why:"By design OpenShell governs actions, so teams still need evaluation and guardrails for behaviour.",fix:"Accept evaluation and guardrail signals as inputs, for example tightening a sandbox's policy when a red-team score drops."}
+];
+var A={plat:"Platform",pol:"Policy and images",rev:"Human review",dx:"Developer experience",scope:"Scope"};
+var S={h:["High","p-bad"],m:["Medium","p-mid"],l:["Low","p-good"]};
+var E={obs:["observed","ev obs"],docs:["docs","ev"],inf:["inferred","ev"]};
+var cat=document.getElementById("cat");
+cat.innerHTML=I.map(function(x){return '<article class="card sev-'+x.s+'" id="'+x.id.toLowerCase()+'" data-a="'+x.a+'"><div class="hd"><span class="id">'+x.id+'</span><h3>'+x.t+'</h3></div><div class="meta"><span class="pill '+S[x.s][1]+'">'+S[x.s][0]+' impact</span><span class="'+E[x.ev][1]+'">'+E[x.ev][0]+'</span><span class="ev">'+A[x.a]+'</span></div><dl><dt>Saw</dt><dd>'+x.saw+'</dd><dt>Matters</dt><dd>'+x.why+'</dd><dt>Fix</dt><dd class="fix">'+x.fix+'</dd></dl></article>';}).join("");
+var btns=document.querySelectorAll(".filters button");
+function apply(f){btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===f));});cat.querySelectorAll(".card").forEach(function(c){c.hidden=!(f==="all"||c.dataset.a===f);});}
+btns.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.f);});});
+document.querySelectorAll(".chip").forEach(function(c){c.addEventListener("click",function(){apply("all");});});
+})();
+</script>
+
+</body>
+</html>

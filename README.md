@@ -9,6 +9,10 @@ A working demo of two things:
 The brief, revised for OpenShell v0.1.9, is in [TASK.md](TASK.md). Rule decisions are logged in
 [evidence/rule-decisions.md](evidence/rule-decisions.md).
 
+**Field assessment:** [docs/openshell-assessment.html](docs/openshell-assessment.html) covers what held up
+in OpenShell 0.1.9, 15 findings with evidence (observed, documented or inferred), an impact × effort map, and
+proposed improvements. Download it and open it in a browser, or view it through any HTML preview.
+
 ## Status
 
 | Step | State |
