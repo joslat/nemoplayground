@@ -78,7 +78,7 @@ internal static class Evaluation
         double Rate(Func<RunRecord, bool> f) => Math.Round(runRecords.Count(f) / (double)runRecords.Count, 3);
         var report = new
         {
-            tool = "AgentEval 0.42.0-beta (MAFEvaluationHarness, no LLM judge)",
+            tool = $"AgentEval {RedTeamScan.AgentEvalVersion} (MAFEvaluationHarness, no LLM judge)",
             agent = "SecReviewer (Microsoft Agent Framework ChatClientAgent)",
             harness = cfg.Harness,
             harnessDescription = AgentFactory.DescribeHarness(cfg.Harness),

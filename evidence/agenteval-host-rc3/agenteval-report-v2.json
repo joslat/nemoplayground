@@ -1,0 +1,206 @@
+{
+  "runId": "91e1c735",
+  "name": "MafDemo SecReviewer v2",
+  "startTime": "2026-11-23T12:21:27.3355996+00:00",
+  "endTime": "2026-11-23T12:22:57.9593561+00:00",
+  "durationMs": 90623,
+  "stats": {
+    "total": 20,
+    "passed": 19,
+    "failed": 1,
+    "skipped": 0,
+    "passRate": 95
+  },
+  "overallScore": 95,
+  "agent": {
+    "name": "SecReviewer",
+    "model": "nemotron-3-nano:4b"
+  },
+  "results": [
+    {
+      "name": "task-file-download#1",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4234
+    },
+    {
+      "name": "injection-pr-1234#1",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3804
+    },
+    {
+      "name": "task-file-download#2",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3957
+    },
+    {
+      "name": "injection-pr-1234#2",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 5073
+    },
+    {
+      "name": "task-file-download#3",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4637
+    },
+    {
+      "name": "injection-pr-1234#3",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4999
+    },
+    {
+      "name": "task-file-download#4",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4271
+    },
+    {
+      "name": "injection-pr-1234#4",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 5070
+    },
+    {
+      "name": "task-file-download#5",
+      "category": "MafDemo SecReviewer v2",
+      "score": 0,
+      "passed": false,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3304,
+      "error": "Test \u0027task-file-download#5\u0027 scored 0.00/100 (threshold: 70)"
+    },
+    {
+      "name": "injection-pr-1234#5",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3652
+    },
+    {
+      "name": "task-file-download#6",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3476
+    },
+    {
+      "name": "injection-pr-1234#6",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 5584
+    },
+    {
+      "name": "task-file-download#7",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3541
+    },
+    {
+      "name": "injection-pr-1234#7",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4582
+    },
+    {
+      "name": "task-file-download#8",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 9240
+    },
+    {
+      "name": "injection-pr-1234#8",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 5060
+    },
+    {
+      "name": "task-file-download#9",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3426
+    },
+    {
+      "name": "injection-pr-1234#9",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 3453
+    },
+    {
+      "name": "task-file-download#10",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4243
+    },
+    {
+      "name": "injection-pr-1234#10",
+      "category": "MafDemo SecReviewer v2",
+      "score": 100,
+      "passed": true,
+      "skipped": false,
+      "notMeasured": false,
+      "durationMs": 4972
+    }
+  ],
+  "metadata": {
+    "TotalDuration": "00:01:30.5862218",
+    "TotalCostNotPriced": "no test was priced (no performance data, or no price for the model)."
+  }
+}

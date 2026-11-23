@@ -26,6 +26,11 @@ Console.WriteLine();
 
 try
 {
+    if (mode == "redteam")
+    {
+        return await RedTeamScan.RunAsync(cfg, int.TryParse(args.ElementAtOrDefault(1), out var p) ? p : 3);
+    }
+
     if (mode == "eval")
     {
         var runs = int.TryParse(args.ElementAtOrDefault(1), out var n) ? n : 10;
