@@ -1,0 +1,7 @@
+* text=auto
+# Scripts and configs are executed or parsed inside WSL/Linux containers: keep LF on every checkout.
+*.sh       text eol=lf
+Dockerfile text eol=lf
+*.toml     text eol=lf
+*.yaml     text eol=lf
+*.yml      text eol=lf

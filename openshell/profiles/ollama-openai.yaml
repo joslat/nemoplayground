@@ -1,0 +1,21 @@
+# Verbatim from https://docs.nvidia.com/openshell/latest/how-it-works/inference (OpenShell v0.1.9).
+# Credentialless profile for an Ollama server on the gateway host.
+id: ollama-openai
+display_name: Ollama
+description: Host-local Ollama OpenAI-compatible API
+category: inference
+inference_capable: true
+credentials: []
+endpoints:
+  - host: host.openshell.internal
+    port: 11434
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+binaries:
+  - /usr/bin/curl
+  - /usr/local/bin/curl
+  - /usr/bin/python3
+  - /usr/local/bin/python
+  - /sandbox/.uv/python/**
+  - /sandbox/.venv/**

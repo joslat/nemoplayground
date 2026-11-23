@@ -1,0 +1,79 @@
+﻿--- whoami: josla
+--- docker
+client 29.1.3 / server 29.1.3 (linux)
+--- systemd
+running
+running
+--- kernel / landlock
+6.6.87.2-microsoft-standard-WSL2
+lsm file not readable (check config: CONFIG_LSM contains landlock)
+wsl : openshell: resolving latest version...
+At line:1 char:319
++ ... WSL_UTF8=1; wsl -d Ubuntu-24.04 --cd /mnt/c/git/nemoplayground -- bas ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (openshell: resolving latest version...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+openshell: downloading v0.1.9 release checksums...
+openshell: selected openshell_0.1.9-1_amd64.deb
+openshell: downloading openshell_0.1.9-1_amd64.deb...
+openshell: verifying checksum...
+openshell: installing openshell_0.1.9-1_amd64.deb...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  openshell
+0 upgraded, 1 newly installed, 0 to remove and 93 not upgraded.
+Need to get 0 B/87.0 MB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 /tmp/tmp.ytJG9C7Iq4/openshell_0.1.9-1_amd64.deb openshell amd64 0.1.9-1 [87.0 MB]
+Selecting previously unselected package openshell.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 40802 files and directories currently installed.)
+Preparing to unpack .../openshell_0.1.9-1_amd64.deb ...
+Unpacking openshell (0.1.9-1) ...
+Setting up openshell (0.1.9-1) ...
+openshell: installed openshell package from v0.1.9
+openshell: restarting openshell-gateway user service as josla...
+Created symlink /home/josla/.config/systemd/user/default.target.wants/openshell-gateway.service → 
+/usr/lib/systemd/user/openshell-gateway.service.
+openshell: registering local gateway as josla...
+✓ Gateway 'openshell' added and set as active
+  Endpoint: https://127.0.0.1:17670
+  Type: local
+✓ TLS certificates present
+openshell: waiting for local gateway listener to become reachable...
+openshell: local gateway listener is reachable
+openshell: waiting for openshell status to report connected...
+openshell: openshell status reports connected
+--- verify
+/usr/bin/openshell
+openshell 0.1.9
+Server Status
+
+  Gateway: openshell
+  Server: https://127.0.0.1:17670
+  Status: Connected
+  Authentication: Authenticated (mTLS transport)
+  Version: 0.1.9

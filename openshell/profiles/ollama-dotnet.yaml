@@ -1,0 +1,21 @@
+# Policy-as-code alternative to approving the proposed rule at runtime: the same grant, reviewed up front.
+# NOT imported by any script. Import it only if you decide this grant is right:
+#   openshell profile lint -f openshell/profiles/ollama-dotnet.yaml
+#   openshell profile import -f openshell/profiles/ollama-dotnet.yaml
+#   openshell provider create --name ollama-dotnet --type ollama-dotnet
+#   openshell sandbox create --name maf-demo2 --from maf-demo:1.0 --provider ollama-dotnet -- dotnet /usr/local/lib/mafdemo/MafDemo.dll
+id: ollama-dotnet
+display_name: Ollama (dotnet clients)
+description: Host-local Ollama OpenAI-compatible API, reachable only by the .NET runtime
+category: inference
+inference_capable: true
+credentials: []
+endpoints:
+  - host: host.openshell.internal
+    port: 11434
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+# The path OpenShell reported in the denial (the resolved symlink target of /usr/bin/dotnet).
+binaries:
+  - /usr/share/dotnet/dotnet

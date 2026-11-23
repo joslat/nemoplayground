@@ -1,0 +1,43 @@
+﻿{
+    "model":  "nemotron-3-nano:4b",
+    "ollama_version":  "0.40.16",
+    "gpu":  "NVIDIA GeForce RTX 3070, 560.94",
+    "loaded":  {
+                   "name":  "nemotron-3-nano:4b",
+                   "size":  2824245082,
+                   "size_vram":  2824245082
+               },
+    "measured_at":  "2026-11-23T10:48:42.3759361+01:00",
+    "runs":  [
+                 {
+                     "run":  1,
+                     "load_ms":  2912,
+                     "prompt_tokens":  41,
+                     "prompt_tokens_per_s":  594.6,
+                     "output_tokens":  184,
+                     "output_tokens_per_s":  119.3,
+                     "gpu_mem_used_mib":  4674,
+                     "gpu_mem_total_mib":  8192
+                 },
+                 {
+                     "run":  2,
+                     "load_ms":  6,
+                     "prompt_tokens":  41,
+                     "prompt_tokens_per_s":  938.5,
+                     "output_tokens":  266,
+                     "output_tokens_per_s":  119.1,
+                     "gpu_mem_used_mib":  4674,
+                     "gpu_mem_total_mib":  8192
+                 },
+                 {
+                     "run":  3,
+                     "load_ms":  6,
+                     "prompt_tokens":  41,
+                     "prompt_tokens_per_s":  969.1,
+                     "output_tokens":  250,
+                     "output_tokens_per_s":  119.7,
+                     "gpu_mem_used_mib":  4670,
+                     "gpu_mem_total_mib":  8192
+                 }
+             ]
+}

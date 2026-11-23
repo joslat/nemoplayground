@@ -1,0 +1,6 @@
+Rule History:
+
+  2026-11-23 10:18:02 proposed [f3909e16] Rule 'allow_host_openshell_internal_11434' proposed (confidence: 60%)
+  2026-11-23 10:34:12 approved [f3909e16] Rule 'allow_host_openshell_internal_11434' approved
+  2026-11-23 10:35:25 proposed [dd043e2f] Rule 'allow_collector_evil_example_443' proposed (confidence: 65%)
+  2026-11-23 10:35:54 rejected [dd043e2f] Rule 'allow_collector_evil_example_443' rejected

@@ -1,0 +1,36 @@
+﻿$ openshell-gateway config preflight
+Server Status
+
+  Gateway: openshell
+  Server: https://127.0.0.1:17670
+  Status: Connected
+  Authentication: Authenticated (mTLS transport)
+  Version: 0.1.9
+$ openshell profile lint -f openshell/profiles/ollama-openai.yaml
+wsl : Provider profile diagnostics:
+At line:1 char:319
++ ... WSL_UTF8=1; wsl -d Ubuntu-24.04 --cd /mnt/c/git/nemoplayground -- bas ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Provider profile diagnostics::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  error openshell/profiles/ollama-openai.yaml profile=ollama-openai field=id custom provider profile 'ollama-openai' 
+already exists
+Error:   × provider profile lint failed
+
+$ openshell provider list
+NAME    TYPE           CREDENTIAL_KEYS   CONFIG_KEYS
+ollama  ollama-openai  0                 0
+
+$ openshell sandbox create --name ollama-smoke --from curlimages/curl:8.11.1 --provider ollama --no-keep -- curl -sS http://host.openshell.internal:11434/v1/models
+
+Created sandbox: ollama-smoke
+
+  [0.0s] Requesting compute...
+[0.0s] Sandbox allocated
+[0.0s] Pulling image curlimages/curl:8.11.1
+[0.0s] Image already present
+[0.3s] Starting sandbox Container created
+{"object":"list","data":[{"id":"nemotron-3-nano:4b","object":"model","created":1795427293,"owned_by":"library"}]}
+✓ Sandbox ollama-smoke deletion accepted; cleanup is pending
+exit: 0

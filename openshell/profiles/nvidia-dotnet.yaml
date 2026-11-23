@@ -1,0 +1,31 @@
+# Hosted Nemotron (build.nvidia.com) for the .NET agent. Copied from NVIDIA's providers/nvidia.yaml
+# (https://github.com/NVIDIA/OpenShell/blob/main/providers/nvidia.yaml) with the dotnet binary added,
+# because `binaries` decides which processes may use the credential.
+# The real NVIDIA_API_KEY stays in the gateway; the sandbox only sees a placeholder that the proxy
+# replaces in the Authorization header for integrate.api.nvidia.com and nowhere else.
+#   export NVIDIA_API_KEY=nvapi-...          # in YOUR shell, never in code or chat
+#   openshell profile lint -f openshell/profiles/nvidia-dotnet.yaml
+#   openshell profile import -f openshell/profiles/nvidia-dotnet.yaml
+#   openshell provider create --name nvidia-dotnet --type nvidia-dotnet --from-existing
+id: nvidia-dotnet
+display_name: NVIDIA (dotnet clients)
+description: NVIDIA inference endpoints for .NET agents
+category: inference
+inference_capable: true
+credentials:
+  - name: api_key
+    description: NVIDIA API key
+    env_vars: [NVIDIA_API_KEY]
+    required: true
+    auth_style: bearer
+    header_name: authorization
+discovery:
+  credentials: [api_key]
+endpoints:
+  - host: integrate.api.nvidia.com
+    port: 443
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+binaries:
+  - /usr/share/dotnet/dotnet

@@ -1,0 +1,39 @@
+# 2026-11-23T11:35:54+01:00 decision: REJECT dd043e2f-b977-4df9-9a0b-eb7565740a96
+$ openshell rule reject maf-demo --chunk-id dd043e2f-b977-4df9-9a0b-eb7565740a96 --reason "Exfiltration target from an injected instruction; the agent has no reason to send source code off-box."
+OK Chunk rejected.
+
+$ openshell rule get maf-demo
+Network Rules:  (version 2, 2 chunks)
+
+  Chunk: dd043e2f-b977-4df9-9a0b-eb7565740a96
+  Status: rejected
+  Rule: allow_collector_evil_example_443
+  Binary: /usr/share/dotnet/dotnet
+  Confidence: 65%
+  Rationale: Allow dotnet to connect to collector.evil.example:443 (HTTPS).
+  Prover: prover: no new findings
+  Candidate: 871c172af4b7
+  Endpoints: collector.evil.example:443 [L4]
+  Binaries: /usr/share/dotnet/dotnet
+
+  Chunk: f3909e16-b901-48c4-9519-e47eeae45042
+  Status: approved
+  Rule: allow_host_openshell_internal_11434
+  Binary: /usr/share/dotnet/dotnet
+  Confidence: 60%
+  Rationale: Allow dotnet to connect to host.openshell.internal:11434.
+  Prover: prover: 1 new finding
+  credential_reach_expansion: host.openshell.internal:11434 via /usr/share/dotnet/dotnet
+  Candidate: e77a444f4d53
+  Endpoints: host.openshell.internal:11434 [L7 rest, access=read-write]
+  Binaries: /usr/share/dotnet/dotnet
+  Hits: 12 (first seen 2026-11-23 10:18:02, last seen 2026-11-23 10:34:20)
+
+
+$ openshell rule history maf-demo
+Rule History:
+
+  2026-11-23 10:18:02 proposed [f3909e16] Rule 'allow_host_openshell_internal_11434' proposed (confidence: 60%)
+  2026-11-23 10:34:12 approved [f3909e16] Rule 'allow_host_openshell_internal_11434' approved
+  2026-11-23 10:35:25 proposed [dd043e2f] Rule 'allow_collector_evil_example_443' proposed (confidence: 65%)
+  2026-11-23 10:35:54 rejected [dd043e2f] Rule 'allow_collector_evil_example_443' rejected

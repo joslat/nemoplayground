@@ -1,0 +1,38 @@
+﻿Version:      1
+Hash:         e979df8071479dc69e5fe96e0ed6e56098e4c84a8f13be33f97208f9f4ce7bf3
+Status:       Effective
+Source:       sandbox
+Config rev:   12460756167730865116
+---
+version: 1
+filesystem_policy:
+  include_workdir: true
+  read_only:
+    - /bin
+    - /usr
+    - /lib
+    - /proc
+    - /dev/urandom
+    - /etc
+    - /var/log
+  read_write:
+    - /tmp
+    - /dev/null
+landlock:
+  compatibility: best_effort
+network_policies:
+  _provider_ollama:
+    name: _provider_ollama
+    endpoints:
+      - host: host.openshell.internal
+        port: 11434
+        protocol: rest
+        enforcement: enforce
+        access: read-write
+    binaries:
+      - path: /usr/bin/curl
+      - path: /usr/local/bin/curl
+      - path: /usr/bin/python3
+      - path: /usr/local/bin/python
+      - path: /sandbox/.uv/python/**
+      - path: /sandbox/.venv/**

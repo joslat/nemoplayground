@@ -1,0 +1,45 @@
+﻿$ openshell sandbox create --name maf-demo --from maf-demo:1.0 --provider ollama --detach -- sleep infinity
+
+Created sandbox: maf-demo
+
+  [0.0s] Requesting compute...
+[0.0s] Sandbox allocated
+[0.0s] Pulling image maf-demo:1.0
+[0.0s] Image already present
+[0.3s] Starting sandbox Container created
+NAME      CREATED              PHASE
+maf-demo  2026-11-23 10:18:00  Ready
+
+$ openshell sandbox exec -n maf-demo -- dotnet /usr/local/lib/mafdemo/MafDemo.dll
+MafDemo | mode=demo | harness=v2: lookup_cwe(query) - search by weakness name or id; the tool supplies the CWE number
+model=nemotron-3-nano:4b | endpoint=http://host.openshell.internal:11434/v1
+API key source: none (local Ollama) -> no key needed
+proxy: none | traces -> /workspace/out/traces.jsonl
+
+wsl : MafDemo failed: AggregateException: Retry failed after 4 tries. (Permission denied 
+(host.openshell.internal:11434)) (Permission denied (host.openshell.internal:11434)) (Permission denied 
+(host.openshell.internal:11434)) (Permission denied (host.openshell.internal:11434))
+At line:1 char:415
++ ... WSL_UTF8=1; wsl -d Ubuntu-24.04 --cd /mnt/c/git/nemoplayground -- bas ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (MafDemo failed:...nternal:11434)):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+exit: 1
+
+$ openshell rule get maf-demo --status pending
+Network Rules:  (version 1, 1 chunk)
+
+  Chunk: f3909e16-b901-48c4-9519-e47eeae45042
+  Status: pending
+  Rule: allow_host_openshell_internal_11434
+  Binary: /usr/share/dotnet/dotnet
+  Confidence: 60%
+  Rationale: Allow dotnet to connect to host.openshell.internal:11434.
+  Prover: prover: 1 new finding
+  credential_reach_expansion: host.openshell.internal:11434 via /usr/share/dotnet/dotnet
+  Candidate: e77a444f4d53
+  Endpoints: host.openshell.internal:11434 [L7 rest, access=read-write]
+  Binaries: /usr/share/dotnet/dotnet
+  Hits: 4 (first seen 2026-11-23 10:18:02, last seen 2026-11-23 10:18:02)
+

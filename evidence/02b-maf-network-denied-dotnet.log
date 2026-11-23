@@ -1,0 +1,50 @@
+﻿$ openshell sandbox create --name maf-demo --from maf-demo:1.0 --provider ollama -- dotnet /usr/local/lib/mafdemo/MafDemo.dll
+
+Created sandbox: maf-demo
+
+  [0.0s] Requesting compute...
+[0.0s] Sandbox allocated
+[0.0s] Pulling image maf-demo:1.0
+[0.0s] Image already present
+[0.2s] Starting sandbox Container created
+MafDemo | mode=demo | harness=v2: lookup_cwe(query) - search by weakness name or id; the tool supplies the CWE number
+model=nemotron-3-nano:4b | endpoint=http://host.openshell.internal:11434/v1
+API key source: none (local Ollama) -> no key needed
+OpenShell sandbox: (not in a sandbox) | traces -> /workspace/out/traces.jsonl
+
+wsl : MafDemo failed: AggregateException: Retry failed after 4 tries. (Permission denied 
+(host.openshell.internal:11434)) (Permission denied (host.openshell.internal:11434)) (Permission denied 
+(host.openshell.internal:11434)) (Permission denied (host.openshell.internal:11434))
+At line:1 char:561
++ ... WSL_UTF8=1; wsl -d Ubuntu-24.04 --cd /mnt/c/git/nemoplayground -- bas ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (MafDemo failed:...nternal:11434)):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+exit: 1
+
+$ openshell sandbox list
+NAME      CREATED              PHASE
+maf-demo  2026-11-23 10:10:56  Error
+
+$ openshell rule get maf-demo --status pending
+No network rules for sandbox 'maf-demo'
+
+$ openshell logs maf-demo -n 60 --source sandbox --level info
+[1795428657.363] [sandbox] [INFO ] [openshell_supervisor] Starting sandbox supervision command=["dotnet", "/usr/local/lib/mafdemo/MafDemo.dll"]
+[1795428657.732] [sandbox] [INFO ] [openshell_supervisor] Fetching sandbox policy via gRPC endpoint=https://host.docker.internal:17670 sandbox=maf-demo sandbox_id=5e24a2d2-eb06-4390-9ee9-726d0297e4e3
+[1795428657.840] [sandbox] [OCSF ] [ocsf] CONFIG:DISCOVERY [INFO] Server returned no policy; attempting local discovery
+[1795428657.970] [sandbox] [OCSF ] [ocsf] CONFIG:READY [INFO] Policy DNS connected to isolation boundary
+[1795428658.075] [sandbox] [OCSF ] [ocsf] CONFIG:LOADED [INFO] Acknowledged initial policy revision as loaded [version:1] [hash:e979df8071479dc69e5fe96e0ed6e56098e4c84a8f13be33f97208f9f4ce7bf3]
+[1795428658.449] [sandbox] [OCSF ] [ocsf] CONFIG:PUBLISHED [INFO] Policy DNS mapped host.openshell.internal resolved=192.168.65.254 synthetic=198.18.0.2 ports=11434 mapping_id=c657f972-e05e-412e-817d-5db3257fb99b
+[1795428658.454] [sandbox] [WARN ] [openshell_supervisor_network::proxy] Denied staged transparent connection destination=198.18.0.2:11434 reason=binary '/usr/share/dotnet/dotnet' not allowed in policy '_provider_ollama' (ancestors: [], cmdline: [/usr/local/lib/mafdemo/MafDemo.dll]). SYMLINK HINT: t
+[1795428658.454] [sandbox] [OCSF ] [ocsf] NET:OPEN [MED] DENIED /usr/share/dotnet/dotnet(0) -> host.openshell.internal:11434 [reason:transparent_tcp_policy_denied]
+[1795428658.478] [sandbox] [OCSF ] [ocsf] CONFIG:PUBLISHED [INFO] Policy DNS mapped host.openshell.internal resolved=192.168.65.254 synthetic=198.18.0.2 ports=11434 mapping_id=a97fa27c-de2c-4ccf-8248-24048ceaa306
+[1795428658.481] [sandbox] [WARN ] [openshell_supervisor_network::proxy] Denied staged transparent connection destination=198.18.0.2:11434 reason=binary '/usr/share/dotnet/dotnet' not allowed in policy '_provider_ollama' (ancestors: [], cmdline: [/usr/local/lib/mafdemo/MafDemo.dll]). SYMLINK HINT: t
+[1795428658.481] [sandbox] [OCSF ] [ocsf] NET:OPEN [MED] DENIED /usr/share/dotnet/dotnet(0) -> host.openshell.internal:11434 [reason:transparent_tcp_policy_denied]
+[1795428658.484] [sandbox] [OCSF ] [ocsf] CONFIG:PUBLISHED [INFO] Policy DNS mapped host.openshell.internal resolved=192.168.65.254 synthetic=198.18.0.2 ports=11434 mapping_id=91f7e864-961c-463e-affb-119818560d58
+[1795428658.486] [sandbox] [WARN ] [openshell_supervisor_network::proxy] Denied staged transparent connection destination=198.18.0.2:11434 reason=binary '/usr/share/dotnet/dotnet' not allowed in policy '_provider_ollama' (ancestors: [], cmdline: [/usr/local/lib/mafdemo/MafDemo.dll]). SYMLINK HINT: t
+[1795428658.486] [sandbox] [OCSF ] [ocsf] NET:OPEN [MED] DENIED /usr/share/dotnet/dotnet(0) -> host.openshell.internal:11434 [reason:transparent_tcp_policy_denied]
+[1795428658.488] [sandbox] [OCSF ] [ocsf] CONFIG:PUBLISHED [INFO] Policy DNS mapped host.openshell.internal resolved=192.168.65.254 synthetic=198.18.0.2 ports=11434 mapping_id=71ff3528-135e-4d3c-929b-90896dde7790
+[1795428658.490] [sandbox] [WARN ] [openshell_supervisor_network::proxy] Denied staged transparent connection destination=198.18.0.2:11434 reason=binary '/usr/share/dotnet/dotnet' not allowed in policy '_provider_ollama' (ancestors: [], cmdline: [/usr/local/lib/mafdemo/MafDemo.dll]). SYMLINK HINT: t
+[1795428658.490] [sandbox] [OCSF ] [ocsf] NET:OPEN [MED] DENIED /usr/share/dotnet/dotnet(0) -> host.openshell.internal:11434 [reason:transparent_tcp_policy_denied]

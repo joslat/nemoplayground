@@ -1,0 +1,16 @@
+# OpenShell gateway config for Windows 10 + WSL 2 (Ubuntu 24.04) + Docker Desktop.
+# Installed to ~/.config/openshell/gateway.toml by scripts/wsl-02-gateway-bridge.sh.
+# Schema: https://docs.nvidia.com/openshell/latest/how-it-works/gateways/configuration
+#
+# Why: the gateway runs inside the Ubuntu distro on 127.0.0.1:17670, but sandbox
+# containers run in Docker Desktop's VM. The default supervisor_network_mode=host
+# makes the supervisor dial *Docker Desktop's* loopback, so it never reaches the
+# gateway ("Startup configuration fetch failed ... failed to connect").
+# Bridge mode calls back through host.docker.internal, which Docker Desktop routes
+# to Windows, and WSL's localhost relay forwards to the gateway in Ubuntu.
+# The workload itself always keeps network=none; only the supervisor networking changes.
+[openshell]
+version = 2
+
+[openshell.drivers.docker]
+supervisor_network_mode = "bridge"
